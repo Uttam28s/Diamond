@@ -10,9 +10,10 @@ import routes from "./Routes";
 
 const isOnline = require("is-online");
 
-const baseUrl = `${process.env.MIX_FETCH_URL}/`;
-const domainUrl = `${process.env.MIX_DOMAIN_URL}/`;
-
+// const baseUrl = `${process.env.FETCH_URL}/`;
+const baseUrl = 'http://localhost:3001';
+// const domainUrl = `${process.env.MIX_DOMAIN_URL}/`;
+console.log('fetchUrl',baseUrl);
 const GET = "GET";
 const DELETE = "DELETE";
 const POST = "POST";

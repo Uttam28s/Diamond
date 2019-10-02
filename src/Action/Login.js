@@ -1,5 +1,5 @@
 import { postAction, actionType } from "../components/Constant/allConstants";
-import { fetchUrl } from "../components/js/fetchUrl";
+import { fetchUrl } from "../js/fetchUrl";
 
 export const editUser = () => ({
   type: postAction

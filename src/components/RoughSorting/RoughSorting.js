@@ -1,11 +1,11 @@
-import { Form, Icon, Input, Button, Col, Row } from "antd";
+import { Form, Icon, Input, Button, Col, Row, Select } from "antd";
 import React, { Component } from "react";
 
 // function hasErrors(fieldsError) {
 //   return Object.keys(fieldsError).some(field => fieldsError[field]);
 // }
 
-class CreateRough extends Component {
+class RoughSorting extends Component {
   constructor() {
     super();
     this.state = {};
@@ -84,7 +84,6 @@ class CreateRough extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.props.addRough(values);
         this.props.closeBox();
       }
     });
@@ -96,22 +95,71 @@ class CreateRough extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { Option } = Select;
     return (
       <Row gutter={18}>
         <Form onSubmit={this.handleSubmit}>
-          <Col span={12}>
-            <Form.Item label="Seller Name">
-              {getFieldDecorator("sellername", {
+          <Col span={6}>
+            <Form.Item label="Rough Caret">
+              {getFieldDecorator("roughCaret", {
                 rules: [
-                  { required: true, message: "Please input Seller Name!" }
+                  { required: true, message: "Please Enter Rough Type !" }
                 ]
               })(
+                <Select
+                  defaultValue="lucy"
+                  //   style={{ width: 120 }}
+                  //   onChange={handleChange}
+                >
+                  <Option value="jack">Jack</Option>
+                  <Option value="lucy">Lucy</Option>
+                  <Option value="Yiminghe">yiminghe</Option>
+                </Select>
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label="Remaining">
+              {getFieldDecorator("remaining")(
                 <Input
                   prefix={
-                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
-                  placeholder="Seller Name"
+                  type="number"
+                  disabled
+                  placeholder=""
                 />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Type Of Rough*">
+              {getFieldDecorator("roughType", {
+                rules: [
+                  { required: true, message: "Please Enter Rough Type !" }
+                ]
+              })(
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select Rough Type"
+                  optionFilterProp="children"
+                  // onChange={onChange}
+                  // onFocus={onFocus}
+                  // onBlur={onBlur}
+                  // onSearch={onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  <Option value="chocki">Chocki</Option>
+                  <Option value="gol">Gol</Option>
+                  <Option value="markis">Markis</Option>
+                  <Option value="crystal">Crystal</Option>
+                  <Option value="out">Out</Option>
+                </Select>
               )}
             </Form.Item>
           </Col>
@@ -130,7 +178,7 @@ class CreateRough extends Component {
               )}
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item label="Amount">
               {getFieldDecorator("amount", {
                 rules: [{ required: true, message: "Enter The Amount!" }]
@@ -158,7 +206,14 @@ class CreateRough extends Component {
               )}
             </Form.Item>
           </Col> */}
-          <Col span={4} offset={15}>
+          <Col span={4} offset={0}>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col span={4} offset={11}>
             <Form.Item>
               <Button onClick={this.handleCancel}>Cancel</Button>
             </Form.Item>
@@ -166,7 +221,7 @@ class CreateRough extends Component {
           <Col span={4} offset={1}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Submit
+                Next
               </Button>
             </Form.Item>
           </Col>
@@ -176,6 +231,6 @@ class CreateRough extends Component {
   }
 }
 
-const CreateRoughs = Form.create({ name: "normal_login" })(CreateRough);
+const RoughSortings = Form.create({ name: "normal_login" })(RoughSorting);
 
-export default CreateRoughs;
+export default RoughSortings;
