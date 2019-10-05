@@ -123,6 +123,7 @@ export const fetchUrl = (
   fetchBaseResponse = false,
   contentType
 ) => {
+  console.log("this is a log from fetchurl",url,type,data);
   setHeaders(contentType, authToken);
   if (type.toUpperCase() === "GET") {
     if (cache.indexOf(url) !== -1) {

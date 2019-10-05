@@ -46,7 +46,8 @@ const addRoughApiCall = (data) => {
   console.log('abc');
   fetchUrl(apiList.Rough.addRough.method, apiList.Rough.addRough.url, data)
   .then(res => {
-			notification.success({ message: res.message });
+      notification.success({ message: "Hello" });
+      console.log("ths is a daya :=>",res);
       store.dispatch({ type: roughAction.LOAD_ROUGH, payload: res.data });
 		})
     .catch((errors) => {

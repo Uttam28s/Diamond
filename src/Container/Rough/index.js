@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(loadRough());
   },
   addRoughs:(data) =>{
+  console.log("TCL: data", data)
     dispatch(addRough(data));
   }
 });
