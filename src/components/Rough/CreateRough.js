@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Col, Row } from "antd";
+import { Form, Icon, Input, Button, Col, Row, DatePicker  } from "antd";
 import React, { Component } from "react";
 
 // function hasErrors(fieldsError) {
@@ -94,13 +94,17 @@ class CreateRough extends Component {
     this.props.closeBox();
   };
 
+  onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Row gutter={18}>
         <Form onSubmit={this.handleSubmit}>
-          <Col span={12}>
-            <Form.Item label="Seller Name">
+          <Col span={24}>
+            <Form.Item label="Seller Name *">
               {getFieldDecorator("sellername", {
                 rules: [
                   { required: true, message: "Please input Seller Name!" }
@@ -116,7 +120,7 @@ class CreateRough extends Component {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Caret">
+            <Form.Item label="Caret *">
               {getFieldDecorator("caret", {
                 rules: [{ required: true, message: "Enter The Caret!" }]
               })(
@@ -130,9 +134,33 @@ class CreateRough extends Component {
               )}
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item label="Amount">
+          <Col span={12}>
+            <Form.Item label="Amount *">
               {getFieldDecorator("amount", {
+                rules: [{ required: true, message: "Enter The Amount!" }]
+              })(
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  type="number"
+                  placeholder="Amount"
+                />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Purchase Date *">
+              {getFieldDecorator("date", {
+                rules: [{ required: true, message: "Enter The Amount!" }]
+              })(
+                <DatePicker  onChange={this.onChange} />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Payment Days *">
+              {getFieldDecorator("days", {
                 rules: [{ required: true, message: "Enter The Amount!" }]
               })(
                 <Input

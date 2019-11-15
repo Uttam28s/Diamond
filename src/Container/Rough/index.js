@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import RoughListing from "../../components/Rough/index";
 // import Quizzes from "../../Components/Quiz/index";
-import { loadRough, addRough } from "../../Action/Rough";
+import { listRough, addRough } from "../../Action/Rough";
 
 
 const roughContainer = props => {
@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loadRoughs:()=>{
-    dispatch(loadRough());
+    dispatch(listRough());
   },
   addRoughs:(data) =>{
   console.log("TCL: data", data)

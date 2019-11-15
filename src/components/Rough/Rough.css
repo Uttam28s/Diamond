@@ -1,19 +1,29 @@
 .ant-modal-confirm-body .anticon {
-  display: none;
+	display: none;
 }
 
-.ant-modal-confirm-body
-  > .anticon
-  + .ant-modal-confirm-title
-  + .ant-modal-confirm-content {
-  margin-left: unset;
+.ant-modal-confirm-body > .anticon + .ant-modal-confirm-title + .ant-modal-confirm-content {
+	margin-left: unset;
 }
 
 .text-center {
-  text-align: center;
+	text-align: center;
 }
 
-.ant-table-content {
-  overflow: scroll;
-  height: 538px;
+/* .ant-table-content {
+	overflow: scroll;
+	height: 538px;
+} */
+
+.tableCustomize .ant-spin-nested-loading {
+	height: 85vh;
+	overflow: scroll;
+}
+
+.displaycolumn {
+	display: none;
+}
+
+.display {
+	display: none;
 }

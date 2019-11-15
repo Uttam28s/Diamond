@@ -55,8 +55,10 @@ class Layouts extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
+            <Link to="/PacketPartition">
               <Icon type="desktop" />
               <span>Sorting ( પ્રકાર )</span>
+              </Link>
             </Menu.Item>
             <SubMenu
               key="sub1"

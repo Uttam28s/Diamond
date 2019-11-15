@@ -36,7 +36,7 @@ class Models extends Component {
 					) : (
 						""
 					)}
-					{this.props.type === "Sorting" ? <RoughSortings closeBox={this.handleCancel} /> : ""}
+					{this.props.type === "Sorting" ? <RoughSortings data={this.props.data} closeBox={this.handleCancel} /> : ""}
 				</Modal>
 			</div>
 		);

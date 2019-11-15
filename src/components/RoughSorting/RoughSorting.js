@@ -1,19 +1,33 @@
 import { Form, Icon, Input, Button, Col, Row, Select } from "antd";
 import React, { Component } from "react";
+import { addSorting,unusedRough } from "../../Action/Rough";
+import { connect } from "react-redux";
 
 // function hasErrors(fieldsError) {
 //   return Object.keys(fieldsError).some(field => fieldsError[field]);
 // }
+// const sortingData = [];
 
 class RoughSorting extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      sortingData : [],
+      data:{},
+      unused:''
+    };
   }
-  //   componentDidMount() {
-  //     To disabled submit button at the beginning.
-  //     this.props.form.validateFields();
-  //   }
+
+  componentDidUpdate = (prevProps) => {
+    if(prevProps.unused != this.props.unused){
+      this.setState({unused:this.props.unused})
+    }
+  }
+    componentDidMount() {
+      // To disabled submit button at the beginning.
+      // this.props.form.validateFields();
+      this.props.unusedRough(this.props.data.id)
+    }
 
   //   handleSubmit = e => {
   //     e.preventDefault();
@@ -83,11 +97,69 @@ class RoughSorting extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
-        this.props.closeBox();
+        this.state.sortingData.push(values);
+        const roughTypes = values.roughType;
+        const caret = roughTypes+"_"+"carat";
+          const amount = roughTypes+"_"+"price";
+        // const data ={
+        //   [caret]:values.carat,
+        //   [amount]: values.amount
+        // }
+        this.state.data[caret] = values.caret;
+        this.state.data[amount]= values.amount
+        console.log("if it is success then i will doing party on the night",this.state.data)
+
+
+        this.props.form.setFields({
+          roughType: {
+            value: '',
+          },
+          caret: {
+            value: '',
+          },
+          amount: {
+            value:  '',
+          }
+        });
+
+        // this.setState({
+        //   data : {
+        //     [caret]:values.caret,
+        //     [amount]:values.amount
+        //   }
+        // },()=>{console.log("if it is success then i will doing party on the night",this.state.data)})
+        // const sorting =this.state.sortingData;
+        // const data = sorting.map
+        // const datas = [];
+        // this.state.sortingData.map((values,id) => {
+        //   const roughTypes = sorting[id].roughType;
+        //   const caret = roughTypes+"_"+"carat";
+        //   const amount = roughTypes+"_"+"price";
+        //   // console.log("TCL: caret", caret)
+        //   const data = {
+        //     [caret]: sorting[id].caret,
+        //     [amount]:sorting[id].amount
+        //   }
+        //   datas.push(data);
+        // })
+        // console.log("TCL: data", datas)
       }
     });
   };
+
+  handelNext = () => {
+    const values = {
+      ...this.state.data,
+      _id : this.props.data.id
+    }
+    this.props.addSorting(values)
+    console.log("TCL: handelNext -> values", values)
+    this.props.closeBox();
+  }
+
+  // handelSortingData = (data) => {
+    
+  // }
 
   handleCancel = () => {
     this.props.closeBox();
@@ -96,31 +168,25 @@ class RoughSorting extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { Option } = Select;
+    const {data} = this.props;
+    console.log("TCL: render -> data", this.props.data)
     return (
       <Row gutter={18}>
         <Form onSubmit={this.handleSubmit}>
           <Col span={6}>
             <Form.Item label="Rough Caret">
-              {getFieldDecorator("roughCaret", {
+              {getFieldDecorator("roughCaret",{ initialValue: data.caret } ,{
                 rules: [
                   { required: true, message: "Please Enter Rough Type !" }
                 ]
               })(
-                <Select
-                  defaultValue="lucy"
-                  //   style={{ width: 120 }}
-                  //   onChange={handleChange}
-                >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="Yiminghe">yiminghe</Option>
-                </Select>
+                <Input disabled/>
               )}
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label="Remaining">
-              {getFieldDecorator("remaining")(
+              {getFieldDecorator("remaining",{ initialValue: this.state.unused })(
                 <Input
                   prefix={
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
@@ -173,6 +239,8 @@ class RoughSorting extends Component {
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   type="number"
+                  min={0}
+                  max={this.state.unused}
                   placeholder="Caret"
                 />
               )}
@@ -208,7 +276,7 @@ class RoughSorting extends Component {
           </Col> */}
           <Col span={4} offset={0}>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={this.handelNext}>
                 Submit
               </Button>
             </Form.Item>
@@ -220,7 +288,7 @@ class RoughSorting extends Component {
           </Col>
           <Col span={4} offset={1}>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" >
                 Next
               </Button>
             </Form.Item>
@@ -233,4 +301,15 @@ class RoughSorting extends Component {
 
 const RoughSortings = Form.create({ name: "normal_login" })(RoughSorting);
 
-export default RoughSortings;
+const mapStateToProps = state => ({ ...state.Test });
+
+// const mapDispatchToProps = dispatch => ({
+//   addSorting:(data) =>{
+//     dispatch(addSorting(data));
+//   },
+// });
+
+export default connect(
+	mapStateToProps,
+	{addSorting , unusedRough}
+)(RoughSortings);
