@@ -1,0 +1,14 @@
+.sorting-table-wrapper .ant-table-wrapper {
+  background-color: white;
+}
+
+.row-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-title {
+  background-color: #fafafa;
+  text-align: center;
+  border-radius: 18px;
+}

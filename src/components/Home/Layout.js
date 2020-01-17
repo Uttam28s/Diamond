@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Layout, Menu, Icon } from "antd";
+import routes from "../../js/Routes";
 import "./Home.css";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -9,23 +10,16 @@ class Layouts extends Component {
   constructor() {
     super();
     this.state = {
-      collapsed: false,
-      keys: "1"
+      collapsed: false
     };
   }
 
   onCollapse = collapsed => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 
   render() {
-    const selectKeys = key => {
-      this.setState({
-        keys: key.key
-      });
-      console.log("selected keys", key);
-    };
     return (
       <Layout style={{ minHeight: "100vh" }}>
         <Sider
@@ -36,28 +30,25 @@ class Layouts extends Component {
           <div className="logo" />
           <Menu
             theme="dark"
-            onSelect={key => {
-              selectKeys(key);
-            }}
-            selectedKeys={this.state.keys}
+            selectedKeys={[this.props.location.pathname]}
             mode="inline"
           >
-            <Menu.Item key="1">
-              <Link to="/home">
+            <Menu.Item key={routes.home}>
+              <Link to={routes.home}>
                 <Icon type="pie-chart" />
                 <span>Home</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/rough">
+            <Menu.Item key={routes.rough}>
+              <Link to={routes.rough}>
                 <Icon type="pie-chart" />
                 <span>Create Rough ( ર ફ )</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="3">
-            <Link to="/PacketPartition">
-              <Icon type="desktop" />
-              <span>Sorting ( પ્રકાર )</span>
+            <Menu.Item key={routes.officepacket}>
+              <Link to={routes.officepacket}>
+                <Icon type="desktop" />
+                <span>Sorting ( પ્રકાર )</span>
               </Link>
             </Menu.Item>
             <SubMenu
@@ -96,4 +87,4 @@ class Layouts extends Component {
   }
 }
 
-export default Layouts;
+export default withRouter(Layouts);

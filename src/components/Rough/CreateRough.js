@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Col, Row, DatePicker  } from "antd";
+import { Form, Icon, Input, Button, Col, Row, DatePicker } from "antd";
 import React, { Component } from "react";
 
 // function hasErrors(fieldsError) {
@@ -83,7 +83,7 @@ class CreateRough extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
         this.props.addRough(values);
         this.props.closeBox();
       }
@@ -95,8 +95,8 @@ class CreateRough extends Component {
   };
 
   onChange = (date, dateString) => {
-    console.log(date, dateString);
-  }
+    // console.log(date, dateString);
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -153,9 +153,7 @@ class CreateRough extends Component {
             <Form.Item label="Purchase Date *">
               {getFieldDecorator("date", {
                 rules: [{ required: true, message: "Enter The Amount!" }]
-              })(
-                <DatePicker  onChange={this.onChange} />
-              )}
+              })(<DatePicker onChange={this.onChange} />)}
             </Form.Item>
           </Col>
           <Col span={12}>

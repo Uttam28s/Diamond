@@ -383,7 +383,7 @@ class EditableTable extends React.Component {
         onCell: record =>{ 
           return({
           record,
-          inputType: col.dataIndex === "name" ? "text" : "number",
+          inputType: col.dataIndex === "name" ? "text" : col.dataIndex === "f_date" ? "date" : "number",
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record)

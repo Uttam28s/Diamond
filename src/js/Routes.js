@@ -1,5 +1,8 @@
 const routes = {
-  login: "/"
+  login: "/",
+  home: "/home",
+  rough: "/rough",
+  officepacket: "/officepacketpartition"
 };
 
 export default routes;

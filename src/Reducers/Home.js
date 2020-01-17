@@ -5,7 +5,7 @@ const Test = (
   state = {
     apicall: false,
     apistatus: false,
-    unused:'',
+    unused:{},
     listSorting: [] || null,
     listRough: [] || null,
     caretList: [] || null
@@ -37,7 +37,7 @@ const Test = (
       console.log("Reducer log for unused",Action.values)
       return{
         ...state,
-        unused: Action.values.unused_carat,
+        unused: {...Action.values},
       }
     case api_status.apifailed:
       return {

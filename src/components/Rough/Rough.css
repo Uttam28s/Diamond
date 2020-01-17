@@ -27,3 +27,7 @@
 .display {
 	display: none;
 }
+
+.addSorting {
+	width: 700px !important;
+}

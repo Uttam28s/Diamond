@@ -66,3 +66,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### This code has a daynamic table for add, edit, delete .
+
+For that you have to follow some steps.
+  - first create a Columns.js file. which helps in a display data from the dataIndex.(the antd table need data index for the display the data)
+  - Second you create a plClean data file in wich you do change for clean your api datas.
