@@ -56,6 +56,28 @@ export const addPacket = data => dispatch =>
       });
   });
 
+export const chapkaIssueSrno = () => dispatch =>
+  new Promise((resolve, reject) => {
+    fetchUrl("get", "chapkaIssue/srno")
+      .then(res => {
+        resolve(res);
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
+
+export const sawingIssueSrno = () => dispatch =>
+  new Promise((resolve, reject) => {
+    fetchUrl("get", "nonReturn/srno")
+      .then(res => {
+        resolve(res);
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
+
 export const getIssuePackets = () => dispatch =>
   new Promise((resolve, reject) => {
     fetchUrl("get", "return/sawing/list")
@@ -109,6 +131,32 @@ export const listCaratPck = id => dispatch =>
 export const setPacketIssueOffice = data => dispatch =>
   new Promise((resolve, reject) => {
     fetchUrl("post", "save/packet/sawing", data)
+      .then(res => {
+        // console.log("this is a all packet data in a packet carat => ", res);
+        // dispatch({ type: packetAction.sawing_Issue, payload: res });
+        resolve(res);
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
+
+export const setChapkaIssueOffice = data => dispatch =>
+  new Promise((resolve, reject) => {
+    fetchUrl("put", "save/packet/chapka", data)
+      .then(res => {
+        // console.log("this is a all packet data in a packet carat => ", res);
+        // dispatch({ type: packetAction.sawing_Issue, payload: res });
+        resolve(res);
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
+
+export const returnChapkaPacket = data => dispatch =>
+  new Promise((resolve, reject) => {
+    fetchUrl("put", "update/chapka-return", data)
       .then(res => {
         // console.log("this is a all packet data in a packet carat => ", res);
         // dispatch({ type: packetAction.sawing_Issue, payload: res });

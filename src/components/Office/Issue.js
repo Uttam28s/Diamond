@@ -17,7 +17,11 @@ import {
   listsrno,
   listCaratPck,
   setPacketIssueOffice,
-  returnSawingPacket
+  returnSawingPacket,
+  sawingIssueSrno,
+  chapkaIssueSrno,
+  setChapkaIssueOffice,
+  returnChapkaPacket
 } from "../../Action/Packet";
 import { unusedRough } from "../../Action/Rough";
 import { connect } from "react-redux";
@@ -40,79 +44,10 @@ class IssueCarat extends Component {
       srno: 0,
       roughId: "",
       value: "sawing",
-      type: ""
+      type: "",
+      sawingSrno: []
     };
   }
-  //   componentDidMount() {
-  //     To disabled submit button at the beginning.
-  //     this.props.form.validateFields();
-  //   }
-
-  //   handleSubmit = e => {
-  //     e.preventDefault();
-  //     this.props.form.validateFields((err, values) => {
-  //       if (!err) {
-  //         console.log("Received values of form: ", values);
-  //       }
-  //     });
-  //   };
-
-  //   render() {
-  //     const {
-  //       getFieldDecorator,
-  //       getFieldsError,
-  //       getFieldError,
-  //       isFieldTouched
-  //     } = this.props.form;
-
-  //     Only show error after a field is touched.
-  //     const usernameError =
-  //       isFieldTouched("username") && getFieldError("username");
-  //     const passwordError =
-  //       isFieldTouched("password") && getFieldError("password");
-  //     return (
-  //       <Form layout="inline" onSubmit={this.handleSubmit}>
-  //         <Form.Item
-  //           validateStatus={usernameError ? "error" : ""}
-  //           help={usernameError || ""}
-  //         >
-  //           {getFieldDecorator("username", {
-  //             rules: [{ required: true, message: "Please input your username!" }]
-  //           })(
-  //             <Input
-  //               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-  //               placeholder="Username"
-  //             />
-  //           )}
-  //         </Form.Item>
-  //         <Form.Item
-  //           validateStatus={passwordError ? "error" : ""}
-  //           help={passwordError || ""}
-  //         >
-  //           {getFieldDecorator("password", {
-  //             rules: [{ required: true, message: "Please input your Password!" }]
-  //           })(
-  //             <Input
-  //               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-  //               type="password"
-  //               placeholder="Password"
-  //             />
-  //           )}
-  //         </Form.Item>
-  //         <Form.Item>
-  //           <Button
-  //             type="primary"
-  //             htmlType="submit"
-  //             disabled={hasErrors(getFieldsError())}
-  //           >
-  //             Log in
-  //           </Button>
-  //         </Form.Item>
-  //       </Form>
-  //     );
-  //   }
-  // }
-
   componentDidMount = async () => {
     await this.props.loadManagers().then(res => {
       // console.log(
@@ -126,6 +61,13 @@ class IssueCarat extends Component {
     this.props.form.setFieldsValue({
       date: moment()
     });
+
+    // this.props.sawingIssueSrno().then(res => {
+    //   console.log("this is a log in a srno list :->", res);
+    //   this.setState({
+    //     sawingSrno: res
+    //   });
+    // });
 
     await this.props.loadCarats().then(res => {
       // console.log(
@@ -206,6 +148,65 @@ class IssueCarat extends Component {
     // });
   };
 
+  handelIssue = (values, id, date) => {
+    if (this.state.value === "sawing") {
+      const data = {
+        caratId: id,
+        manager_name: values.mname,
+        pcs: values.pcs,
+        distrtibute_date: date,
+        srno: this.state.srno,
+        carat: values.pcarat,
+        return: 0,
+        type: values.lose,
+        packetType: values.type
+      };
+      this.props.setPacketIssueOffice(data).then(res => this.props.closeBox());
+      console.log("Received values of form: ", values, data);
+    } else {
+      const data = {
+        caratId: id,
+        chapka_manager_name: values.mname,
+        chapka_pcs: values.pcs,
+        chapka_distrtibute_date: date,
+        srno: this.state.srno,
+        chapka_carat: values.pcarat,
+        chapkaReturn: 0,
+        type: values.lose,
+        // packetType: values.type
+      };
+      this.props.setChapkaIssueOffice(data).then(res => this.props.closeBox());
+      console.log("Received values of form: ", values, data);
+    }
+  };
+
+  handelReturn = values => {
+    if (this.state.value === "sawing") {
+      const sawingReturn = {
+        caratId: values.id,
+        srno: this.state.srno,
+        return_carat: values.values.pcarat,
+        return_pcs: values.values.pcs,
+        return_date: values.date
+      };
+      this.props
+        .returnSawingPacket(sawingReturn)
+        .then(res => this.props.closeBox());
+    } else {
+      const chapkaReturn = {
+        caratId: values.id,
+        srno: this.state.srno,
+        chapka_return_carat: values.values.pcarat,
+        chapka_return_pcs: values.values.pcs,
+        chapka_return_date: values.date
+      };
+      this.props
+        .returnChapkaPacket(chapkaReturn)
+        .then(res => this.props.closeBox());
+      // message.success("Packet return Successfully")}
+    }
+  };
+
   handleSubmit = e => {
     console.log("TCL: e", e);
     e.preventDefault();
@@ -216,32 +217,14 @@ class IssueCarat extends Component {
         console.log("TCL: id", id);
 
         if (this.props.type === "return") {
-          const sawingReturn = {
-            caratId: id,
-            srno: this.state.srno,
-            return_carat: values.pcarat,
-            return_pcs: values.pcs,
-            return_date: date
-          };
-          this.props
-            .returnSawingPacket(sawingReturn)
-            .then(res => this.props.closeBox());
-          // message.success("Packet return Successfully")
-        } else {
           const data = {
-            caratId: id,
-            manager_name: values.mname,
-            pcs: values.pcs,
-            distrtibute_date: date,
-            srno: this.state.srno,
-            carat: values.pcarat,
-            return: 0,
-            type: values.lose
+            id,
+            date,
+            values
           };
-          this.props
-            .setPacketIssueOffice(data)
-            .then(res => this.props.closeBox());
-          console.log("Received values of form: ", values, data);
+          this.handelReturn(data);
+        } else {
+          this.handelIssue(values, id, date);
         }
       }
     });
@@ -272,6 +255,20 @@ class IssueCarat extends Component {
     this.setState({
       value: e.target.value
     });
+    if (e.target.value === "sawing") {
+      this.props.sawingIssueSrno().then(res => {
+        this.setState({
+          sawingSrno: res
+        });
+      });
+    } else {
+      this.props.chapkaIssueSrno().then(res => {
+        console.log("this is a log in a chapka issue srno ->", res);
+        this.setState({
+          sawingSrno: res
+        });
+      });
+    }
   };
 
   onChangeSawingType = e => {
@@ -299,6 +296,7 @@ class IssueCarat extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { type } = this.props;
     return (
       <Row gutter={18}>
         <Form onSubmit={this.handleSubmit}>
@@ -378,13 +376,21 @@ class IssueCarat extends Component {
                   onChange={this.onChangeSrno}
                   filterOption={true}
                 >
-                  {this.state.singleSrno.map((value, id) => {
-                    return (
-                      <Option value={value.srno} key={value.srno}>
-                        {value.srno}
-                      </Option>
-                    );
-                  })}
+                  {type === "return"
+                    ? this.state.sawingSrno.map((value, id) => {
+                        return (
+                          <Option value={value.srno} key={value.srno}>
+                            {value.srno}
+                          </Option>
+                        );
+                      })
+                    : this.state.singleSrno.map((value, id) => {
+                        return (
+                          <Option value={value.srno} key={value.srno}>
+                            {value.srno}
+                          </Option>
+                        );
+                      })}
                 </Select>
               )}
             </Form.Item>
@@ -540,5 +546,9 @@ export default connect(mapStateToProps, {
   addPacket,
   returnSawingPacket,
   listsrno,
-  setPacketIssueOffice
+  setPacketIssueOffice,
+  chapkaIssueSrno,
+  sawingIssueSrno,
+  setChapkaIssueOffice,
+  returnChapkaPacket
 })(IssueCarats);

@@ -1,3 +1,5 @@
+import {Tag} from 'antd';
+
 export const columns = [
   {
     title: "Total Carat",
@@ -28,7 +30,8 @@ export const columns = [
     dataIndex: "distrtibute_date",
     width: "10%",
     editable: true
-  }
+  },
+  
   // {
   //   title: "Available",
   //   dataIndex: "available_stock",

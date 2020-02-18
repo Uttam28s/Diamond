@@ -23,6 +23,7 @@ import {
 } from "antd";
 import Models from "../../js/model";
 import RoughListing from "../RoughSorting/RoughListing";
+import moment from "moment";
 
 const menu = (
   <Menu>
@@ -306,6 +307,8 @@ class EditableTable extends React.Component {
       name:datas.sellername,
       carat:datas.caret,
       price:datas.amount,
+      date: moment(datas.date).format('YYYY-MM-DD'),
+      days: datas.days,
     }
     this.props.addRoughs(data);
   }

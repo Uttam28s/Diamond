@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Popconfirm } from "antd";
+import { Table, Popconfirm, Tag } from "antd";
 import { connect } from "react-redux";
 import { listPacket } from "../../Action/Packet";
 import {
@@ -22,7 +22,41 @@ import moment from "moment";
 class PacketListing extends React.Component {
   state = { data: "", editingKey: "" };
   columns = [
-    ...this.props.column
+    ...this.props.column,
+    {
+      title: "Status",
+      dataIndex: "packet_status",
+      render: packet_status => {
+        // console.log("this is a log in a packet Partition in a tags ->", packet_status);
+        // return (
+        //   <span>
+        //     {(tag => {
+              
+        //     })}
+        //   </span>
+        // );
+        let color = 'blue';
+              if (packet_status === "Sawing Issue") {
+                color = "red";
+              }
+              if (packet_status === "Sawing Return") {
+                color = "cyan";
+              }
+              if (packet_status === "Chapka Issue") {
+                color = "volcano";
+              }
+              if (packet_status === "Chapka Return") {
+                color = "green";
+              }
+              return (
+                <Tag color={color} key={packet_status}>
+                  {packet_status.toUpperCase()}
+                </Tag>
+              );
+      },
+      width: "15%",
+      editable: false
+    }
     // {
     //   title: "operation",
     //   dataIndex: "operation",
