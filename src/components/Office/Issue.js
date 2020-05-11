@@ -8,7 +8,7 @@ import {
   DatePicker,
   Radio,
   Select,
-  message
+  // message
 } from "antd";
 import {
   loadManagers,
@@ -21,7 +21,7 @@ import {
   sawingIssueSrno,
   chapkaIssueSrno,
   setChapkaIssueOffice,
-  returnChapkaPacket
+  returnChapkaPacket,
 } from "../../Action/Packet";
 import { unusedRough } from "../../Action/Rough";
 import { connect } from "react-redux";
@@ -45,37 +45,26 @@ class IssueCarat extends Component {
       roughId: "",
       value: "sawing",
       type: "",
-      sawingSrno: []
+      sawingSrno: [],
     };
   }
   componentDidMount = async () => {
-    await this.props.loadManagers().then(res => {
+    await this.props.loadManagers().then((res) => {
       // console.log(
       //   "this is a responce in a componentdidMount of a Packet :->",
       //   res
       // );
       this.setState({
-        mname: res
+        mname: res,
       });
     });
     this.props.form.setFieldsValue({
-      date: moment()
+      date: moment(),
     });
 
-    // this.props.sawingIssueSrno().then(res => {
-    //   console.log("this is a log in a srno list :->", res);
-    //   this.setState({
-    //     sawingSrno: res
-    //   });
-    // });
-
-    await this.props.loadCarats().then(res => {
-      // console.log(
-      //   "this is a Carat in a componentdidMount of a Packet :->",
-      //   res
-      // );
+    await this.props.loadCarats().then((res) => {
       this.setState({
-        carat: res
+        carat: res,
       });
     });
   };
@@ -85,70 +74,34 @@ class IssueCarat extends Component {
   };
 
   onChange = async (date, dateString) => {
-    console.log(date, dateString);
-    // await this.props.unusedRough(dateString.key).then(res => {
-    //   // console.log("TCL: onChange -> res", res);
-    //   this.setState(
-    //     {
-    //       unusedRough: res.office_unused_carat || res.unused_carat,
-    //       id: dateString.key
-    //     },
-    //     () => {
-    //       const { form } = this.props;
-    //       form.setFieldsValue({
-    //         available: this.state.unusedRough
-    //       });
-    //     }
-    //   );
-    // });
-    await this.props.listCaratPck(date).then(res => {
+    await this.props.listCaratPck(date).then((res) => {
       console.log("TCL: onChange -> res", res);
       this.setState(
         {
-          pckCarat: res
+          pckCarat: res,
         },
         () => {
           const srnoData = [];
-          this.state.pckCarat.find(item => {
+          this.state.pckCarat.find((item) => {
             const singleSrno = item.srno;
             const jointData = { srno: singleSrno };
             srnoData.push(jointData);
+            console.log("IssueCarat -> onChange -> srnoData", srnoData);
+            return item;
           });
           this.setState({
-            singleSrno: srnoData
+            singleSrno: srnoData,
           });
           this.props.form.setFieldsValue({
-            available: this.state.pckCarat[0].available_stock
+            available: this.state.pckCarat[0].available_stock,
           });
         }
       );
     });
-    //   this.setState(
-    //     {
-    //       unusedRough: res.office_unused_carat || res.unused_carat,
-    //       id: dateString.key
-    //     },
-    //     () => {
-    //       const { form } = this.props;
-    //       form.setFieldsValue({
-    //         available: this.state.unusedRough
-    //       });
-    //     }
-    //   );
-    // });
-
-    // await this.props.listsrno(date).then(res => {
-    //   console.log("srno -> ", res);
-    //   this.setState(
-    //     {
-    //       srno: res[0].srno + 1
-    //     },
-    //     () => console.log("this is a log in a list srno ->", this.state.srno)
-    //   );
-    // });
   };
 
   handelIssue = (values, id, date) => {
+    console.log("this is a log in a handelIssue =>", this.state.value);
     if (this.state.value === "sawing") {
       const data = {
         caratId: id,
@@ -157,11 +110,13 @@ class IssueCarat extends Component {
         distrtibute_date: date,
         srno: this.state.srno,
         carat: values.pcarat,
-        return: 0,
+        // return: 0,
         type: values.lose,
-        packetType: values.type
+        packetType: values.type,
       };
-      this.props.setPacketIssueOffice(data).then(res => this.props.closeBox());
+      this.props
+        .setPacketIssueOffice(data)
+        .then((res) => this.props.closeBox());
       console.log("Received values of form: ", values, data);
     } else {
       const data = {
@@ -175,39 +130,41 @@ class IssueCarat extends Component {
         type: values.lose,
         // packetType: values.type
       };
-      this.props.setChapkaIssueOffice(data).then(res => this.props.closeBox());
+      this.props
+        .setChapkaIssueOffice(data)
+        .then((res) => this.props.closeBox());
       console.log("Received values of form: ", values, data);
     }
   };
 
-  handelReturn = values => {
+  handelReturn = (values) => {
     if (this.state.value === "sawing") {
       const sawingReturn = {
         caratId: values.id,
         srno: this.state.srno,
         return_carat: values.values.pcarat,
         return_pcs: values.values.pcs,
-        return_date: values.date
+        return_date: values.date,
       };
       this.props
         .returnSawingPacket(sawingReturn)
-        .then(res => this.props.closeBox());
+        .then((res) => this.props.closeBox());
     } else {
       const chapkaReturn = {
         caratId: values.id,
         srno: this.state.srno,
         chapka_return_carat: values.values.pcarat,
         chapka_return_pcs: values.values.pcs,
-        chapka_return_date: values.date
+        chapka_return_date: values.date,
       };
       this.props
         .returnChapkaPacket(chapkaReturn)
-        .then(res => this.props.closeBox());
+        .then((res) => this.props.closeBox());
       // message.success("Packet return Successfully")}
     }
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     console.log("TCL: e", e);
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -220,7 +177,7 @@ class IssueCarat extends Component {
           const data = {
             id,
             date,
-            values
+            values,
           };
           this.handelReturn(data);
         } else {
@@ -233,16 +190,16 @@ class IssueCarat extends Component {
   onChangeSrno = (date, dateString) => {
     console.log("TCL: onChangeSrno -> date, dateString", date, dateString);
     const singlePacketDetails = this.state.pckCarat.find(
-      item => item.srno === date
+      (item) => item.srno === date
     );
     this.props.form.setFieldsValue({
       available: this.state.pckCarat[0].available_stock,
       pcarat: singlePacketDetails.carat,
-      pcs: singlePacketDetails.pcs
+      pcs: singlePacketDetails.pcs,
     });
     this.setState({
       roughId: singlePacketDetails.rough_id,
-      srno: date
+      srno: date,
     });
     console.log(
       "TCL: onChangeSrno -> singlePacketDetails",
@@ -250,35 +207,35 @@ class IssueCarat extends Component {
     );
   };
 
-  onChangeSawing = e => {
+  onChangeSawing = (e) => {
     console.log("radio checked", e.target.value);
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
     if (e.target.value === "sawing") {
-      this.props.sawingIssueSrno().then(res => {
+      this.props.sawingIssueSrno().then((res) => {
         this.setState({
-          sawingSrno: res
+          sawingSrno: res,
         });
       });
     } else {
-      this.props.chapkaIssueSrno().then(res => {
+      this.props.chapkaIssueSrno().then((res) => {
         console.log("this is a log in a chapka issue srno ->", res);
         this.setState({
-          sawingSrno: res
+          sawingSrno: res,
         });
       });
     }
   };
 
-  onChangeSawingType = e => {
+  onChangeSawingType = (e) => {
     console.log("radio checked", e.target.value);
-    this.setState({
-      value: e.target.value
-    });
+    // this.setState({
+    //   value: e.target.value
+    // });
   };
 
-  onChanges = value => {
+  onChanges = (value) => {
     console.log(`selected ${value}`);
   };
 
@@ -290,7 +247,7 @@ class IssueCarat extends Component {
     console.log("focus");
   };
 
-  onSearch = val => {
+  onSearch = (val) => {
     console.log("search:", val);
   };
 
@@ -306,12 +263,13 @@ class IssueCarat extends Component {
           <Col span={12}>
             <Form.Item label="Type *">
               {getFieldDecorator("type", {
-                rules: [{ required: true }]
+                initialValue: "sawing",
+                rules: [{ required: true }],
               })(
                 <Radio.Group
-                  defaultValue="sawing"
+                  // defaultValue="sawing"
                   onChange={this.onChangeSawing}
-                  value={this.state.value}
+                  // value={this.state.value}
                 >
                   <Radio value="sawing">Sawing</Radio>
                   <Radio value="chapka">Chapka</Radio>
@@ -323,8 +281,11 @@ class IssueCarat extends Component {
             " "
           ) : (
             <Col span={12}>
-              <Form.Item label="Lose/Plate *">
-                {getFieldDecorator("lose")(
+              <Form.Item label="Lose/Plate">
+                {getFieldDecorator("lose", {
+                  rules: [{ required: true }],
+                  initialValue: "lose",
+                })(
                   <Radio.Group
                     onChange={this.onChangeSawingType}
                     value={this.state.type}
@@ -336,10 +297,10 @@ class IssueCarat extends Component {
               </Form.Item>
             </Col>
           )}
-          <Col span={6}>
+          <Col span={8}>
             <Form.Item label="Caret Id*">
               {getFieldDecorator("caret", {
-                rules: [{ required: true, message: "Enter The Caret!" }]
+                rules: [{ required: true, message: "Enter The Caret!" }],
               })(
                 <Select
                   showSearch
@@ -363,10 +324,44 @@ class IssueCarat extends Component {
               )}
             </Form.Item>
           </Col>
+          <Col span={8}>
+            <Form.Item label="Sr No. *">
+              {getFieldDecorator("srno", {
+                rules: [{ required: true }],
+                setFieldsValue: this.state.srno,
+              })(
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  disabled
+                  type="number"
+                  // value={this.state.srno}
+                  placeholder="Amount"
+                />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Available *">
+              {getFieldDecorator("available", {
+                // rules: [{ required: true }],
+              })(
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  disabled
+                  type="number"
+                  placeholder="Amount"
+                />
+              )}
+            </Form.Item>
+          </Col>
           <Col span={6}>
             <Form.Item label="Sr No. *">
               {getFieldDecorator("srno", {
-                rules: [{ required: true }]
+                rules: [{ required: true }],
               })(
                 <Select
                   showSearch
@@ -384,9 +379,9 @@ class IssueCarat extends Component {
                           </Option>
                         );
                       })
-                    : this.state.singleSrno.map((value, id) => {
+                    : this.state.pckCarat.map((value, id) => {
                         return (
-                          <Option value={value.srno} key={value.srno}>
+                          <Option value={value.srno} key={value._id}>
                             {value.srno}
                           </Option>
                         );
@@ -402,8 +397,8 @@ class IssueCarat extends Component {
               <Form.Item label="Manager Name *">
                 {getFieldDecorator("mname", {
                   rules: [
-                    { required: true, message: "Please input Manager Name!" }
-                  ]
+                    { required: true, message: "Please input Manager Name!" },
+                  ],
                 })(
                   <Select
                     showSearch
@@ -435,26 +430,10 @@ class IssueCarat extends Component {
               </Form.Item>
             </Col>
           )}
-          <Col span={12}>
-            <Form.Item label="Available *">
-              {getFieldDecorator("available", {
-                rules: [{ required: true }]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  disabled
-                  type="number"
-                  placeholder="Amount"
-                />
-              )}
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          <Col span={6}>
             <Form.Item label="Packet Carat *">
               {getFieldDecorator("pcarat", {
-                rules: [{ required: true }]
+                rules: [{ required: true }],
               })(
                 <Input
                   prefix={
@@ -466,10 +445,10 @@ class IssueCarat extends Component {
               )}
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={6}>
             <Form.Item label="Piece *">
               {getFieldDecorator("pcs", {
-                rules: [{ required: true, message: "Enter The Amount!" }]
+                rules: [{ required: true, message: "Enter The Amount!" }],
               })(
                 <Input
                   prefix={
@@ -484,38 +463,10 @@ class IssueCarat extends Component {
           <Col span={12}>
             <Form.Item label="Purchase Date *">
               {getFieldDecorator("date", {
-                rules: [{ required: true, message: "Enter The Amount!" }]
+                rules: [{ required: true, message: "Enter The Amount!" }],
               })(<DatePicker onChange={this.onChange} />)}
             </Form.Item>
           </Col>
-          {/* <Col span={12}>
-              <Form.Item label="Payment Days *">
-                {getFieldDecorator("days", {
-                  rules: [{ required: true, message: "Enter The Amount!" }]
-                })(
-                  <Input
-                    prefix={
-                      <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                    }
-                    type="number"
-                    placeholder="Amount"
-                  />
-                )}
-              </Form.Item>
-            </Col> */}
-          {/* <Col span={24}>
-              <Form.Item label="Total Price">
-                {getFieldDecorator("totalPrice", {})(
-                  <Input
-                    prefix={
-                      <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                    }
-                    disabled={true}
-                    placeholder="Total Price"
-                  />
-                )}
-              </Form.Item>
-            </Col> */}
           <Col className="cancel-button-class" span={4} offset={15}>
             <Form.Item>
               <Button onClick={this.handleCancel}>Cancel</Button>
@@ -536,7 +487,7 @@ class IssueCarat extends Component {
 
 const IssueCarats = Form.create({ name: "normal_login" })(IssueCarat);
 
-const mapStateToProps = state => ({ ...state.Packet });
+const mapStateToProps = (state) => ({ ...state.Packet });
 
 export default connect(mapStateToProps, {
   listCaratPck,
@@ -550,5 +501,5 @@ export default connect(mapStateToProps, {
   chapkaIssueSrno,
   sawingIssueSrno,
   setChapkaIssueOffice,
-  returnChapkaPacket
+  returnChapkaPacket,
 })(IssueCarats);

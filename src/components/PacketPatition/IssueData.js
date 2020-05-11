@@ -7,24 +7,24 @@ import moment from "moment";
 const columns = [
   {
     title: "Total Carat",
-    dataIndex: "total_carat"
+    dataIndex: "total_carat",
   },
   {
     title: "Manager",
-    dataIndex: "manager_name"
+    dataIndex: "manager_name",
   },
   {
     title: "Carat",
-    dataIndex: "carat"
+    dataIndex: "carat",
   },
   {
     title: "Pieces",
-    dataIndex: "pcs"
+    dataIndex: "pcs",
   },
   {
     title: "Date",
-    dataIndex: "distrtibute_date"
-  }
+    dataIndex: "distrtibute_date",
+  },
 ];
 
 class IssueData extends Component {
@@ -32,21 +32,22 @@ class IssueData extends Component {
     super(props);
 
     this.state = {
-      data: []
+      data: [],
     };
   }
 
   componentDidMount() {
-    this.props.getIssuePackets().then(res => {
+    this.props.getIssuePackets().then((res) => {
       console.log("TCL: IssueData -> componentDidMount -> res", res);
-      res.map(value => {
+      res.map((value) => {
         value.distrtibute_date = moment(value.distrtibute_date).format(
           "DD-MM-YYYY"
         );
+        return res;
       });
       this.setState(
         {
-          data: res
+          data: res,
         },
         () => console.log("this is a log in a state :-> ", this.state.data)
       );
@@ -61,7 +62,7 @@ class IssueData extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.Packet });
+const mapStateToProps = (state) => ({ ...state.Packet });
 
 export default connect(mapStateToProps, { getIssuePackets, loadCarats })(
   IssueData

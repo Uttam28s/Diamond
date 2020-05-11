@@ -1,13 +1,16 @@
 .ant-modal-confirm-body .anticon {
-	display: none;
+  display: none;
 }
 
-.ant-modal-confirm-body > .anticon + .ant-modal-confirm-title + .ant-modal-confirm-content {
-	margin-left: unset;
+.ant-modal-confirm-body
+  > .anticon
+  + .ant-modal-confirm-title
+  + .ant-modal-confirm-content {
+  margin-left: unset;
 }
 
 .text-center {
-	text-align: center;
+  text-align: center;
 }
 
 /* .ant-table-content {
@@ -16,18 +19,39 @@
 } */
 
 .tableCustomize .ant-spin-nested-loading {
-	height: 85vh;
-	overflow: scroll;
+  height: 85vh;
+  overflow: scroll;
 }
 
 .displaycolumn {
-	display: none;
+  display: none;
 }
 
 .display {
-	display: none;
+  display: none;
 }
 
 .addSorting {
-	width: 700px !important;
+  width: 700px !important;
+}
+
+.table-opration-text {
+  display: flex;
+}
+
+p {
+  margin-bottom: 0px;
+}
+
+.table-opration-text p {
+  margin-top: 0;
+  /* font-size: 15px; */
+  margin-bottom: 0em;
+  color: #1890ff;
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
 }

@@ -1,7 +1,21 @@
-import React, { Component } from 'react';
-import { Drawer, Table, Form, Popconfirm, Button, Col, Row, Input, Select, DatePicker, Icon , Card, List } from 'antd';
+import React, { Component } from "react";
+import {
+  Drawer,
+  Table,
+  Form,
+  Popconfirm,
+  // Button,
+  // Col,
+  // Row,
+  Input,
+  // Select,
+  // DatePicker,
+  // Icon,
+  // Card,
+  // List,
+} from "antd";
 import { connect } from "react-redux";
-const { Option } = Select;
+// const { Option } = Select;
 
 const EditableContext = React.createContext();
 
@@ -13,7 +27,7 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-let data ;
+// let data;
 
 class EditableCell extends React.Component {
   state = {
@@ -29,7 +43,7 @@ class EditableCell extends React.Component {
     });
   };
 
-  save = e => {
+  save = (e) => {
     const { record, handleSave } = this.props;
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
@@ -40,7 +54,7 @@ class EditableCell extends React.Component {
     });
   };
 
-  renderCell = form => {
+  renderCell = (form) => {
     this.form = form;
     const { children, dataIndex, record, title } = this.props;
     const { editing } = this.state;
@@ -54,7 +68,13 @@ class EditableCell extends React.Component {
             },
           ],
           initialValue: record[dataIndex],
-        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
+        })(
+          <Input
+            ref={(node) => (this.input = node)}
+            onPressEnter={this.save}
+            onBlur={this.save}
+          />
+        )}
       </Form.Item>
     ) : (
       <div
@@ -90,9 +110,7 @@ class EditableCell extends React.Component {
   }
 }
 
-
 class RoughList extends Component {
-
   showDrawer = () => {
     // this.setState({
     //   visible: true,
@@ -113,30 +131,33 @@ class RoughList extends Component {
     super(props);
     this.columns = [
       {
-        title: 'Type',
-        dataIndex: 'type',
-        width: '30%',
+        title: "Type",
+        dataIndex: "type",
+        width: "30%",
         editable: true,
       },
       {
-        title: 'Caret',
-        dataIndex: 'carat',
+        title: "Caret",
+        dataIndex: "carat",
       },
       {
-        title: 'Price',
-        dataIndex: 'price',
+        title: "Price",
+        dataIndex: "price",
       },
       {
-        title: 'Total',
-        dataIndex: 'total',
+        title: "Total",
+        dataIndex: "total",
       },
       {
-        title: 'operation',
-        dataIndex: 'operation',
+        title: "operation",
+        dataIndex: "operation",
         render: (text, record) =>
           this.state.dataSource.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-              <a>Delete</a>
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => this.handleDelete(record.key)}
+            >
+              <p>Delete</p>
             </Popconfirm>
           ) : null,
       },
@@ -145,19 +166,21 @@ class RoughList extends Component {
     this.state = {
       dataSource: [],
       count: 2,
-      visible: false
+      visible: false,
     };
   }
 
-  handleDelete = key => {
+  handleDelete = (key) => {
     const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    this.setState({
+      dataSource: dataSource.filter((item) => item.key !== key),
+    });
   };
 
   handleAdd = () => {
     const { count, dataSource } = this.state;
     const newData = {
-      key: count,
+      key: count + 1,
       name: `Edward King ${count}`,
       age: 32,
       address: `London, Park Lane no. ${count}`,
@@ -168,9 +191,9 @@ class RoughList extends Component {
     });
   };
 
-  handleSave = row => {
+  handleSave = (row) => {
     const newData = [...this.state.dataSource];
-    const index = newData.findIndex(item => row.key === item.key);
+    const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, {
       ...item,
@@ -187,16 +210,24 @@ class RoughList extends Component {
   // }
 
   componentDidUpdate = (prevProps) => {
-    if(prevProps.data != this.props.data){
-      const arrayShift = this.props.data.shift();
-      this.setState({
-        dataSource : this.props.data || ""
-      },() => {console.log("this data is a dataSource in a rough Listings",this.state.dataSource)})
+    if (prevProps.data !== this.props.data) {
+      // const arrayShift = this.props.data.shift();
+      this.setState(
+        {
+          dataSource: this.props.data || "",
+        },
+        () => {
+          console.log(
+            "this data is a dataSource in a rough Listings",
+            this.state.dataSource
+          );
+        }
+      );
     }
-  }
+  };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    // const { getFieldDecorator } = this.props.form;
     const { dataSource } = this.state;
     const components = {
       body: {
@@ -204,13 +235,13 @@ class RoughList extends Component {
         cell: EditableCell,
       },
     };
-    const columns = this.columns.map(col => {
+    const columns = this.columns.map((col) => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: record => ({
+        onCell: (record) => ({
           record,
           editable: col.editable,
           dataIndex: col.dataIndex,
@@ -228,14 +259,14 @@ class RoughList extends Component {
           visible={this.showDrawer}
         >
           <div>
-        <Table
-          components={components}
-          rowClassName={() => 'editable-row'}
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-        />
-      </div>
+            <Table
+              components={components}
+              rowClassName={() => "editable-row"}
+              bordered
+              dataSource={dataSource}
+              columns={columns}
+            />
+          </div>
         </Drawer>
       </div>
     );
@@ -244,8 +275,6 @@ class RoughList extends Component {
 
 const RoughListing = Form.create()(RoughList);
 
-const mapStateToProps = state => ({ ...state.Test });
+const mapStateToProps = (state) => ({ ...state.Test });
 
-export default connect(
-	mapStateToProps,null
-)(RoughListing);
+export default connect(mapStateToProps, null)(RoughListing);

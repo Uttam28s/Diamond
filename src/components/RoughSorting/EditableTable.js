@@ -2,11 +2,11 @@ import React from "react";
 import { Table, Popconfirm } from "antd";
 import { EditableFormRow, EditableContext } from "./EditableFormRow";
 import EditableCell from "./EditableCell";
-import { antData } from "../../Data/antData";
-import { antColumns } from "./antColumns";
-import { plCleanData, cleanTheData, raw } from "../../Data/plCleanData";
+// import { antData } from "../../Data/antData";
+// import { antColumns } from "./antColumns";
+import { cleanTheData, raw } from "../../Data/plCleanData";
 import { plColumns } from "./plColumns";
-import moment from "moment";
+// import moment from "moment";
 // console.log(antData);
 // console.log(plCleanData);
 
@@ -24,33 +24,32 @@ export default class EditableTable extends React.Component {
             {editable ? (
               <span>
                 <EditableContext.Consumer>
-                  {form => (
-                    <a
-                      href="javascript:;"
+                  {(form) => (
+                    <p
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
                       Save
-                    </a>
+                    </p>
                   )}
                 </EditableContext.Consumer>
                 <Popconfirm
                   title="Sure to cancel?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a>Cancel</a>
+                  <p>Cancel</p>
                 </Popconfirm>
               </span>
             ) : (
-              <a onClick={() => this.edit(record.key)}>Edit</a>
+              <p onClick={() => this.edit(record.key)}>Edit</p>
             )}
           </div>
         );
-      }
-    }
+      },
+    },
   ];
 
-  isEditing = record => {
+  isEditing = (record) => {
     return record.key === this.state.editingKey;
   };
 
@@ -64,7 +63,7 @@ export default class EditableTable extends React.Component {
         return;
       }
       const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
+      const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         // pick the proper record based on primary key
         const item = newData[index];
@@ -80,7 +79,7 @@ export default class EditableTable extends React.Component {
 
         newData.splice(index, 1, {
           ...item,
-          ...row
+          ...row,
         });
         this.setState({ data: newData, editingKey: "" });
       } else {
@@ -98,18 +97,18 @@ export default class EditableTable extends React.Component {
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell
-      }
+        cell: EditableCell,
+      },
     };
 
-    const columns = this.columns.map(col => {
+    const columns = this.columns.map((col) => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: record => {
-          const checkInput = index => {
+        onCell: (record) => {
+          const checkInput = (index) => {
             switch (index) {
               case "camp_cpc":
                 return "number";
@@ -125,9 +124,9 @@ export default class EditableTable extends React.Component {
             inputType: checkInput(col.dataIndex),
             dataIndex: col.dataIndex,
             title: col.title,
-            editing: this.isEditing(record)
+            editing: this.isEditing(record),
           };
-        }
+        },
       };
     });
 

@@ -2,29 +2,16 @@ import React, { Component } from "react";
 import Layouts from "../Home/Layout";
 import Header from "../Home/Header";
 import { connect } from "react-redux";
-import { listPacket } from "../../Action/Packet";
+import { listPacket, loadCarats } from "../../Action/Packet";
 import { listCarats } from "../../Action/Rough";
-import {
-  Table,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Form,
-  Select,
-  Dropdown,
-  Icon,
-  Badge,
-  Menu,
-  Button,
-  Row,
-  Col
-} from "antd";
+import { Select, Button, Row, Col } from "antd";
 import Models from "../../js/model";
 import PacketListing from "./PacketListing";
 import { columns } from "./TableData/Columns";
-import Rough from "../Rough/Rough";
-import IssueData from "./IssueData";
+// import Rough from "../Rough/Rough";
+// import IssueData from "./IssueData";
 import "./Packet.css";
+import { withRouter } from "react-router";
 
 const { Option } = Select;
 
@@ -33,67 +20,96 @@ class PacketPartition extends Component {
     super(props);
     this.state = {
       type: "",
-      packetList: [] || 0
+      packetList: [] || 0,
+      caratList: [] || 0,
     };
   }
 
   handelCancel = () => {
     this.setState({
-      type: ""
+      type: "",
     });
   };
 
   showIssueModel = () => {
     this.setState({
-      type: "IssueCarat"
+      type: "IssueCarat",
     });
   };
 
   showReturnModel = () => {
     this.setState({
-      type: "ReturnCarat"
+      type: "ReturnCarat",
     });
   };
   showModel = () => {
     this.setState({
-      type: "AddPacket"
+      type: "AddPacket",
     });
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log(`selected ${value}`);
   };
 
-  onBlur = () => {
-    console.log("blur");
-  };
-
-  onFocus = () => {
-    console.log("focus");
-  };
-
-  onSearch = val => {
+  onSearch = (val) => {
     console.log("search:", val);
   };
 
-  // componentDidMount = () => {
-  //   // this.props.listCarats();
-  //   this.props.listPacket().then(res => {
-  //     this.setState(
-  //       {
-  //         packetList: res
-  //       },
-  //       () =>
-  //         console.log("this is a log in a state :-> ", this.state.packetList)
-  //     );
-  //   });
-  // };
-
-  componentDidUpdate = prevProps => {
-    if (prevProps.caretList !== this.props.caretList) {
-      console.log("this is a log from ", this.props.caretList);
+  componentDidMount = () => {
+    // this.props.listCarats();
+    this.props.listPacket().then((res) => {
+      this.setState(
+        {
+          packetList: res,
+        },
+        () => console.log("this is a log in a state :-> ", this.props)
+      );
+    });
+    if (this.props.loadCarat.length > 0) {
+      this.setState({
+        caratList: this.props.loadCarat,
+      });
+    } else {
+      this.props.loadCarats().then((res) => {
+        // console.log(
+        //   "this is a Carat in a componentdidMount of a Packet :->",
+        //   res
+        // );
+        this.setState({
+          caratList: res,
+          // date: moment().format("YYYY-MM-DD"),
+        });
+      });
     }
   };
+
+  handelAddPacket = () => {
+    this.props.listPacket().then((res) => {
+      this.setState(
+        {
+          packetList: res,
+        },
+        () =>
+          console.log("this is a log in a state :-> ", this.state.packetList)
+      );
+    });
+  };
+
+  // componentDidUpdate = (prevProps) => {
+  //   if (prevProps.listPacket !== this.props.listPacket) {
+  //     console.log("this is a log from ", this.props.caretList);
+  //     this.props.listPacket().then((res) => {
+  //       this.setState(
+  //         {
+  //           packetList: res,
+  //         },
+  //         () =>
+  //           console.log("this is a log in a state :-> ", this.state.packetList)
+  //       );
+  //     });
+  //   }
+  // };
   render() {
     return (
       <div className="main-content-section">
@@ -104,44 +120,22 @@ class PacketPartition extends Component {
               width: "100%",
               overflow: "scroll",
               backgroundColor: "#F2F2F2",
-              height: "100vh"
+              height: "100vh",
             }}
           >
-            <Header />
+            <Header title="Packet Listing" />
             <div
               style={{
                 margin: "14px 0px",
                 backgroundColor: "#F2F2F2",
-                placeContent: "flex-end"
+                placeContent: "flex-end",
               }}
             >
-              {/* <Select
-    				showSearch
-    				style={{ width: 200 }}
-    				placeholder="Select caret"
-    				optionFilterProp="children"
-    				onChange={this.onChange}
-    				onFocus={this.onFocus}
-    				onBlur={this.onBlur}
-    				onSearch={this.onSearch}
-    				filterOption={(input, option) =>
-    				  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-    				}
-  				>
-					{this.props.caretList.map((value,id)=>{
-						console.log("this is a log for array values in a option",value);
-						return(
-						<Option value={value}>{value}</Option>)
-					})}
-    				{/* <Option value="lucy">Lucy</Option>
-    				<Option value="jack">Jack</Option>
-    				<Option value="tom">Tom</Option> *
-  				</Select> */}
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-around",
-                  width: "50%"
+                  width: "100%",
                 }}
               >
                 <Button type="primary" onClick={this.showIssueModel}>
@@ -153,6 +147,23 @@ class PacketPartition extends Component {
                 <Button type="primary" onClick={this.showModel}>
                   ADD Packet
                 </Button>
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select carat"
+                  optionFilterProp="children"
+                  onChange={this.onChange}
+                  onSearch={this.onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {this.state.caratList.map((val) => (
+                    <Option value={val.id}>{val.carat}</Option>
+                  ))}
+                </Select>
               </div>
             </div>
             {this.state.type === "IssueCarat" ? (
@@ -168,36 +179,29 @@ class PacketPartition extends Component {
             )}
 
             {this.state.type === "AddPacket" ? (
-              <Models type="AddPacket" onCancel={this.handelCancel} />
+              <Models
+                type="AddPacket"
+                handelAddPacket={this.handelAddPacket}
+                onCancel={this.handelCancel}
+              />
             ) : (
               ""
             )}
             <div>
               <Row className="row-wrapper" gutter={16}>
-                <Col className="sorting-table-wrapper" span={13}>
-                  <h2 className="table-title">Packet List</h2>
+                <Col className="sorting-table-wrapper" span={24}>
+                  {/* <h2 className="table-title">Packet List</h2> */}
                   <PacketListing
                     data={this.state.packetList}
                     column={columns}
                   />
                 </Col>
-                <Col className="sorting-table-wrapper" span={10}>
+                {/* <Col className="sorting-table-wrapper" span={10}>
                   <h2 className="table-title">Issue Packet</h2>
                   <IssueData />
-                </Col>
+                </Col> */}
               </Row>
-              {/* <PacketListing data={this.state.packetList} column={columns} /> */}
             </div>
-            {/* <Table
-            className='tableCustomize'
-							bordered
-							dataSource={this.state.data}
-							columns={columns}
-							rowClassName="editable-row"
-							pagination={{
-								onChange: this.cancel
-							}}
-						/> */}
           </div>
         </div>
       </div>
@@ -205,8 +209,10 @@ class PacketPartition extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.Test });
+const mapStateToProps = (state) => ({ ...state.Test, ...state.Packet });
 
-export default connect(mapStateToProps, { listCarats, listPacket })(
-  PacketPartition
+export default withRouter(
+  connect(mapStateToProps, { listCarats, listPacket, loadCarats })(
+    PacketPartition
+  )
 );

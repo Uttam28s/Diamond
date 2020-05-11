@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Login.css";
 import logo from "../../assets/images/avtar1.png";
-import { message, notification } from "antd";
+import { notification } from "antd";
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -9,7 +9,7 @@ class Login extends Component {
     super();
     this.state = {
       userName: "",
-      password: ""
+      password: "",
     };
     this.handelLogin = this.handelLogin.bind(this);
   }
@@ -17,7 +17,7 @@ class Login extends Component {
     console.log("editUserName", e.target.value);
     const userName = e.target.value;
     this.setState({
-      userName
+      userName,
     });
   }
 
@@ -26,7 +26,7 @@ class Login extends Component {
     console.log("this is a  username", this.state.userName);
     const password = e.target.value;
     this.setState({
-      password
+      password,
     });
   }
 
@@ -59,7 +59,7 @@ class Login extends Component {
             <input
               className="inputField"
               type="text"
-              onChange={e => {
+              onChange={(e) => {
                 this.editUserName(e);
               }}
               placeholder="Enter Username"
@@ -72,7 +72,7 @@ class Login extends Component {
             <input
               className="inputField"
               type="password"
-              onChange={e => {
+              onChange={(e) => {
                 this.editPassword(e);
               }}
               placeholder="Enter Password"

@@ -4,16 +4,16 @@ import {
   Input,
   InputNumber,
   Select,
-  DatePicker,
-  TimePicker,
-  Checkbox,
-  Radio
+  // DatePicker,
+  // TimePicker,
+  // Checkbox,
+  // Radio
 } from "antd";
 import { EditableContext } from "./EditableFormRow";
-import moment from "moment";
+// import moment from "moment";
 const FormItem = Form.Item;
 const Option = Select.Option;
-const RadioGroup = Radio.Group;
+// const RadioGroup = Radio.Group;
 export default class EditableCell extends React.Component {
   dateFormat = "DD.MM.YYYY";
   timeFormat = "HH:mm";
@@ -26,12 +26,15 @@ export default class EditableCell extends React.Component {
               rules: [
                 {
                   required: true,
-                  message: `Please Input ${title}!`
-                }
+                  message: `Please Input ${title}!`,
+                },
               ],
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(
-              <InputNumber formatter={value => value} parser={value => value} />
+              <InputNumber
+                formatter={(value) => value}
+                parser={(value) => value}
+              />
             )}
           </FormItem>
         );
@@ -39,18 +42,18 @@ export default class EditableCell extends React.Component {
         return (
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(
               <Select style={{ width: 150 }}>
-                    <Option value="gol" key="gol">
-                      Gol
-                    </Option>
-                    <Option value="Marqius" key="marquis">
-                      Marqius
-                    </Option>
-                    <Option value="Crystal" key="crystal">
-                      Crystal
-                    </Option>
+                <Option value="gol" key="gol">
+                  Gol
+                </Option>
+                <Option value="Marqius" key="marquis">
+                  Marqius
+                </Option>
+                <Option value="Crystal" key="crystal">
+                  Crystal
+                </Option>
               </Select>
             )}
           </FormItem>
@@ -63,10 +66,10 @@ export default class EditableCell extends React.Component {
               rules: [
                 {
                   required: true,
-                  message: `Please Input ${title}!`
-                }
+                  message: `Please Input ${title}!`,
+                },
               ],
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(<Input />)}
           </FormItem>
         );
@@ -85,7 +88,7 @@ export default class EditableCell extends React.Component {
     } = this.props;
     return (
       <EditableContext.Consumer>
-        {form => {
+        {(form) => {
           const { getFieldDecorator } = form;
           return (
             <td {...restProps}>

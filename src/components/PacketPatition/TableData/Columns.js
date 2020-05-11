@@ -1,11 +1,11 @@
-import {Tag} from 'antd';
+// import {Tag} from 'antd';
 
 export const columns = [
   {
     title: "Total Carat",
     dataIndex: "total_carat",
     width: "10%",
-    editable: true
+    editable: true,
   },
   // {
   //   title: "Manager",
@@ -17,21 +17,21 @@ export const columns = [
     title: "Carat",
     dataIndex: "carat",
     width: "10%",
-    editable: true
+    editable: true,
   },
   {
     title: "Pieces",
     dataIndex: "pcs",
     width: "10%",
-    editable: true
+    editable: true,
   },
   {
     title: "Date",
     dataIndex: "distrtibute_date",
     width: "10%",
-    editable: true
+    editable: true,
   },
-  
+
   // {
   //   title: "Available",
   //   dataIndex: "available_stock",

@@ -1,31 +1,44 @@
-import { Form, Icon, Input, InputNumber, Button, Col, Row, Select, Table, Popconfirm, DatePicker, TimePicker, Checkbox, Radio } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  Col,
+  Row,
+  Select,
+  Table,
+  Popconfirm,
+  DatePicker,
+  TimePicker,
+  Checkbox,
+  Radio,
+} from "antd";
 import React, { Component } from "react";
-import { addSorting,unusedRough } from "../../Action/Rough";
+import { addSorting, unusedRough } from "../../Action/Rough";
 import { connect } from "react-redux";
 import { EditableFormRow, EditableContext } from "./EditableFormRow";
 // import EditableCell from "./EditableCell";
-import { antData } from "../../Data/antData";
-import { antColumns } from "./antColumns";
-import { plCleanData, cleanTheData, raw } from "../../Data/plCleanData";
+// import { antData } from "../../Data/antData";
+// import { antColumns } from "./antColumns";
+// import { plCleanData, cleanTheData, raw } from "../../Data/plCleanData";
 import { plColumns } from "./plColumns";
+import "../Rough/Rough.css";
 import rawData from "../../Data/plRawData.json";
 import moment from "moment";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
-const sortingData = [];
+// function hasErrors(fieldsError) {
+//   return Object.keys(fieldsError).some(field => fieldsError[field]);
+// }
+// const sortingData = [];
 
-
-const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>
-);
-
+// const EditableRow = ({ form, index, ...props }) => (
+//   <EditableContext.Provider value={form}>
+//     <tr {...props} />
+//   </EditableContext.Provider>
+// );
 
 class EditableCell extends Component {
   state = {
@@ -35,13 +48,13 @@ class EditableCell extends Component {
   toggleEdit = () => {
     const editing = !this.state.editing;
     this.setState({ editing }, () => {
-      if(editing){
-      this.input.focus();
+      if (editing) {
+        this.input.focus();
       }
     });
   };
 
-  save = e => {
+  save = (e) => {
     const { record, handleSave } = this.props;
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
@@ -88,12 +101,18 @@ class EditableCell extends Component {
               rules: [
                 {
                   required: true,
-                  message: `Please Input ${title}!`
-                }
+                  message: `Please Input ${title}!`,
+                },
               ],
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(
-              <InputNumber  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save}  formatter={value => value} parser={value => value} />
+              <InputNumber
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+                formatter={(value) => value}
+                parser={(value) => value}
+              />
             )}
           </FormItem>
         );
@@ -101,16 +120,30 @@ class EditableCell extends Component {
         return (
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
-              initialValue: moment(record[dataIndex], this.dateFormat)
-            })(<DatePicker  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save}  format={this.dateFormat} />)}
+              initialValue: moment(record[dataIndex], this.dateFormat),
+            })(
+              <DatePicker
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+                format={this.dateFormat}
+              />
+            )}
           </FormItem>
         );
       case "time":
         return (
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
-              initialValue: moment(record[dataIndex], this.timeFormat)
-            })(<TimePicker  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save}  format={this.timeFormat} />)}
+              initialValue: moment(record[dataIndex], this.timeFormat),
+            })(
+              <TimePicker
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+                format={this.timeFormat}
+              />
+            )}
           </FormItem>
         );
       case "checkbox":
@@ -118,8 +151,14 @@ class EditableCell extends Component {
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
               initialValue: record[dataIndex] === "true",
-              valuePropName: "checked"
-            })(<Checkbox  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save}  />)}
+              valuePropName: "checked",
+            })(
+              <Checkbox
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+              />
+            )}
           </FormItem>
         );
 
@@ -127,9 +166,13 @@ class EditableCell extends Component {
         return (
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(
-              <RadioGroup  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} >
+              <RadioGroup
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+              >
                 <Radio value={"a"}>a</Radio>
                 <Radio value={"b"}>b</Radio>
               </RadioGroup>
@@ -140,10 +183,17 @@ class EditableCell extends Component {
         return (
           <FormItem style={{ margin: 0 }}>
             {getFieldDecorator(dataIndex, {
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(
-              <Select style={{ width: 150 }}  ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} >
-                <Option value="gol" key="gol">Gol</Option>
+              <Select
+                style={{ width: 150 }}
+                ref={(node) => (this.input = node)}
+                onPressEnter={this.save}
+                onBlur={this.save}
+              >
+                <Option value="gol" key="gol">
+                  Gol
+                </Option>
                 <Option key="markis">Markis</Option>
                 <Option key="crystal">Crystal</Option>
                 <Option key="chocki">Chocki</Option>
@@ -160,10 +210,10 @@ class EditableCell extends Component {
               rules: [
                 {
                   required: true,
-                  message: `Please Input ${title}!`
-                }
+                  message: `Please Input ${title}!`,
+                },
               ],
-              initialValue: record[dataIndex]
+              initialValue: record[dataIndex],
             })(<Input />)}
           </FormItem>
         );
@@ -192,22 +242,21 @@ class EditableCell extends Component {
       //   )}
       // </td>
       <EditableContext.Consumer>
-        {form => {
-           this.form = form;
+        {(form) => {
+          this.form = form;
           const { getFieldDecorator } = form;
-          
-          const data = record && record[dataIndex] ? record[dataIndex] : null
-          if(!data){
-          return <td {...restProps}> {children}</td>;
+
+          const data = record && record[dataIndex] ? record[dataIndex] : null;
+          if (!data) {
+            return <td {...restProps}> {children}</td>;
           }
           return (
             <td {...restProps}>
-              {
-                !editing ? 
-                <div onClick={this.toggleEdit} >
-                {data}
-                </div> : this.getInput(record, dataIndex, title, getFieldDecorator)
-              }
+              {!editing ? (
+                <div onClick={this.toggleEdit}>{data}</div>
+              ) : (
+                this.getInput(record, dataIndex, title, getFieldDecorator)
+              )}
               {/* {editable
                 ? // <FormItem style={{ margin: 0 }}>
                   //   {getFieldDecorator(dataIndex, {
@@ -236,13 +285,18 @@ class EditableTable extends Component {
     this.columns = [
       ...plColumns,
       {
-        title: 'operation',
-        dataIndex: 'operation',
+        title: "operation",
+        dataIndex: "operation",
         render: (text, record) =>
-          this.state.dataSource.length >= 1 ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-              <a>Delete</a>
-            </Popconfirm>
+          this.state.dataSource.length > 1 ? (
+            <span className="table-opration-text">
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => this.handleDelete(record.key)}
+              >
+                <p>Delete</p>
+              </Popconfirm>
+            </span>
           ) : null,
       },
     ];
@@ -255,9 +309,11 @@ class EditableTable extends Component {
     };
   }
 
-  handleDelete = key => {
+  handleDelete = (key) => {
     const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    this.setState({
+      dataSource: dataSource.filter((item) => item.key !== key),
+    });
   };
 
   handleAdd = () => {
@@ -265,8 +321,8 @@ class EditableTable extends Component {
     const newData = {
       key: count,
       type: "Gol",
-      carat:1,
-      price:1
+      carat: 1,
+      price: 1,
     };
     this.setState({
       dataSource: [...dataSource, newData],
@@ -274,34 +330,40 @@ class EditableTable extends Component {
     });
   };
 
-  componentDidMount(){
-    console.log("this.props.data ->,",this.props.data);
+  componentDidMount() {
+    console.log("this.props.data ->,", this.props.data);
     this.props.unusedRough(this.props.data.id);
   }
 
-  handelSubmit = async() => {
-    this.state.dataSource.map((value,id) => {
-      console.log("this is a log in ahandel submit :->",value);
-        const roughTypes = value.type;
-        const caret = roughTypes+"_"+"carat";
-          const amount = roughTypes+"_"+"price";
-        // const data ={
-        //   [caret]:values.carat,
-        //   [amount]: values.amount
-        // }
-        this.state.data[caret] = value.carat;
-        this.state.data[amount]= value.price
+  handelSubmit = async () => {
+    this.state.dataSource.map((value, id) => {
+      console.log("this is a log in ahandel submit :->", value);
+      const roughTypes = value.type;
+      // eslint-disable-next-line no-useless-concat
+      const caret = roughTypes + "_" + "carat";
+      // eslint-disable-next-line no-useless-concat
+      const amount = roughTypes + "_" + "price";
+      // const data ={
+      //   [caret]:values.carat,
+      //   [amount]: values.amount
+      // }
+      this.state.data[caret] = value.carat;
+      this.state.data[amount] = value.price;
+      return value;
     });
     this.state.data["_id"] = this.props.unused.rough_id || this.props.data.id;
-    console.log("if it is success then i will doing party on the night",this.state.data);
-    await this.props.addSorting(this.state.data).then(res => {
+    console.log(
+      "if it is success then i will doing party on the night",
+      this.state.data
+    );
+    await this.props.addSorting(this.state.data).then((res) => {
       this.props.closeBox();
-    })
-  }
+    });
+  };
 
-  handleSave = row => {
+  handleSave = (row) => {
     const newData = [...this.state.dataSource];
-    const index = newData.findIndex(item => row.key === item.key);
+    const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, {
       ...item,
@@ -316,17 +378,17 @@ class EditableTable extends Component {
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell
-      }
+        cell: EditableCell,
+      },
     };
-    const columns = this.columns.map(col => {
+    const columns = this.columns.map((col) => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: record => {
-          const checkInput = index => {
+        onCell: (record) => {
+          const checkInput = (index) => {
             switch (index) {
               case "carat":
                 return "number";
@@ -353,12 +415,16 @@ class EditableTable extends Component {
             editable: col.editable,
             handleSave: this.handleSave,
           };
-        }
+        },
       };
     });
     return (
       <div>
-        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+        <Button
+          onClick={this.handleAdd}
+          type="primary"
+          style={{ marginBottom: 16 }}
+        >
           Add a row
         </Button>
         <Row gutter={24}>
@@ -366,25 +432,37 @@ class EditableTable extends Component {
             <label>Caret</label>
           </Col>
           <Col span={6}>
-            <Input type="number" value={this.props.unused.carat || 0} disabled/>
+            <Input
+              type="number"
+              value={this.props.unused.carat || 0}
+              disabled
+            />
           </Col>
           <Col span={4} offset={4}>
             <label>Remaining</label>
           </Col>
           <Col span={6}>
-            <Input type="number" value={this.props.unused.unused_carat || 0} disabled/>
+            <Input
+              type="number"
+              value={this.props.unused.unused_carat || 0}
+              disabled
+            />
           </Col>
         </Row>
         <Table
           components={components}
-          rowClassName={() => 'editable-row'}
-          style={{marginTop:'20px'}}
+          rowClassName={() => "editable-row"}
+          style={{ marginTop: "20px" }}
           bordered
           dataSource={dataSource}
           columns={columns}
         />
-        <div style={{textAlign:'-webkit-right'}}>
-          <Button onClick={this.handelSubmit} type="primary" style={{ marginTop: 16 }}>
+        <div style={{ textAlign: "-webkit-right" }}>
+          <Button
+            onClick={this.handelSubmit}
+            type="primary"
+            style={{ marginTop: 16 }}
+          >
             Submit
           </Button>
         </div>
@@ -393,10 +471,9 @@ class EditableTable extends Component {
   }
 }
 
-
 const RoughSortings = Form.create({ name: "normal_login" })(EditableTable);
 
-const mapStateToProps = state => ({ ...state.Test });
+const mapStateToProps = (state) => ({ ...state.Test });
 
 // const mapDispatchToProps = dispatch => ({
 //   addSorting:(data) =>{
@@ -404,7 +481,6 @@ const mapStateToProps = state => ({ ...state.Test });
 //   },
 // });
 
-export default connect(
-	mapStateToProps,
-	{addSorting , unusedRough}
-)(RoughSortings);
+export default connect(mapStateToProps, { addSorting, unusedRough })(
+  RoughSortings
+);

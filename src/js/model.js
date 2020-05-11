@@ -5,23 +5,23 @@ import CreateRoughs from "../components/Rough/CreateRough";
 import RoughSortings from "../components/RoughSorting/RoughSorting";
 import IssueCarats from "../components/Office/Issue";
 // import ReturnCarats from "../components/Office/Return";
-import EditableTable from "../components/RoughSorting/EditableTable";
+// import EditableTable from "../components/RoughSorting/EditableTable";
 import AddPacketModel from "../components/PacketPatition/AddPacketModel";
 class Models extends Component {
   state = { visible: true };
 
-  handleOk = e => {
+  handleOk = (e) => {
     console.log("sdadsadasd", e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.onCancel();
     console.log(e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
@@ -54,7 +54,10 @@ class Models extends Component {
             ""
           )}
           {this.props.type === "AddPacket" ? (
-            <AddPacketModel closeBox={this.handleCancel} />
+            <AddPacketModel
+              closeBox={this.handleCancel}
+              handelAddPacket={this.props.handelAddPacket}
+            />
           ) : (
             ""
           )}

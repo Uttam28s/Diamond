@@ -1,12 +1,12 @@
 import { PageHeader } from "antd";
 import React from "react";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <PageHeader
-      onBack={() => null}
-      title="Title"
-      subTitle="This is a subtitle"
+      // onBack={() => null}
+      title={props.title}
+      subTitle={props.subtitle}
     />
   );
 };

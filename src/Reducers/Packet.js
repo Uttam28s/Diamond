@@ -2,9 +2,9 @@ import { packetAction } from "../js/actions";
 
 const Packet = (
   state = {
-    loadCarat: "",
+    loadCarat: [],
     loadManager: "",
-    packet_carat: {}
+    packet_carat: {},
   },
   Action
 ) => {
@@ -12,30 +12,30 @@ const Packet = (
     case packetAction.load_carat:
       return {
         ...state,
-        loadCarat: { ...Action.value }
+        loadCarat: Action.value,
       };
-      break;
+    // break;
 
     case packetAction.load_packet_carat:
       return {
         ...state,
-        packet_carat: Action.payload
+        packet_carat: Action.payload,
       };
-      break;
+    // break;
 
     case packetAction.sawing_Issue:
       return {
         ...state,
-        sawing_Issue: Action.payload
+        sawing_Issue: Action.payload,
       };
-      break;
+    // break;
 
     case packetAction.manger_name:
       return {
         ...state,
-        loadManager: { ...Action.vale }
+        loadManager: { ...Action.vale },
       };
-      break;
+    // break;
     default:
       return state;
   }
